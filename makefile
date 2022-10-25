@@ -2,17 +2,11 @@
 #G=-ggdb
 CFLAGS=-std=c11 $G -Wall -fmax-errors=10 -Wextra
 
-PassMan: PassMan.o menu.o
-	gcc $G $(CFLAGS) PassMan.o menu.o -o PassMan
+prime: main.c
+	gcc $G $(CFLAGS) main.c -o prime
 
-PassMan.o: main.c menu.h
-	gcc $G $(CFLAGS) -c main.c -o PassMan.o
-
-menu.o: menu.c
-	gcc $G $(CFLAGS) -c menu.c -o menu.o
-
-launch: PassMan	
-	./PassMan
+launch: prime	
+	./prime
 
 debug: PassMan	
 	gdb -q PassMan
