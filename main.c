@@ -1,80 +1,64 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-struct student {
-      char name[50];
-      int age;
-      struct student *next;
+struct node
+{
+    int num;
+    struct node *next;
 };
 
-struct student *createStudent(char studentName[], int studentAge);
-void copyString(char inputString[], char * destinationString);
-struct student *append(struct student * end, struct student * newStudptr);
-void printStudents(struct student *start);
-void freeStudents(struct student *start);
-/* add any other prototypes as needed */
+void print(struct node *);
+struct node *createNode(int );
+struct node *append(struct node *, struct node *);
+void freeList(struct node *);
 
-int main(void) {
-    struct student *start, *newStudptr, *end;
-    int ageP, ageR, ageM;
+int main(int argc, char *argv[]) {
 
-    scanf("%d %d %d", &ageP, &ageR, &ageM);
-
-    start = createStudent("Petra", ageP);
+    // int ceil = (argc > 0) ? (int) argv[0] : 5000;
+    struct node *start, *end, *newNode;
+    start = createNode(1);
     end = start;
-    newStudptr = createStudent("Remi", ageR);
-    end = append(end, newStudptr);
-    newStudptr = createStudent("Mike", ageM);
-    end = append(end, newStudptr);
+    newNode = createNode(2);
+    end = append(end, newNode);
+    newNode = createNode(3);
+    end = append(end, newNode);
 
-    printStudents(start);
-    freeStudents(start);
+    
+    print(start);
 
+    freeList(start);
     return 0;
 }
 
-/* Place your function definitions here. Be sure to include the definitions for 
-   createStudent(), append(), printStudents() as well as any other functions you 
-   created for the previous tasks. */
+void print(struct node *start) {
+    struct node *ptr = start;
+    while (ptr != NULL) {
+        printf("%d ", ptr->num);
+        ptr = ptr->next;
+    }
+}
 
-struct student * createStudent(char studentName[], int age) {
-    struct student * ptr;
-    ptr = (struct student *) malloc(sizeof(struct student));
-    copyString(studentName, ptr->name);
-    ptr->age = age;
+struct node *createNode(int num) {
+
+    struct node *ptr;
+    ptr = (struct node *) malloc(sizeof(struct node));
+
+    ptr->num = num;
     ptr->next = NULL;
 
     return ptr;
 }
 
-void copyString(char inputString[], char * destinationString) {
+struct node *append(struct node *currentEnd, struct node *newNode) {
 
-    int i = 0;
-    for(i = 0; inputString[i] != '\0'; i++) {
-        destinationString[i] = inputString[i];
-    }
-    destinationString[i] = '\0';
-
-}
-
-struct student * append(struct student * currentEnd, struct student * newStudent) {
-
-    currentEnd->next = newStudent;    
+    currentEnd->next = newNode;
     return currentEnd->next;
 }
 
-void printStudents(struct student *start) {
-    struct student * ptr = start;
+void freeList(struct node *start) {
 
-    while (ptr != NULL) {
-        printf("%s is %d years old.\n", ptr->name, ptr->age);
-        ptr = ptr->next;
-    }
-}
-
-void freeStudents(struct student *start) {
-    struct student *ptr = start;
-    struct student *temp;
+    struct node *ptr = start;
+    struct node *temp;
 
     while( ptr != NULL) {
         temp = ptr->next;
@@ -82,3 +66,4 @@ void freeStudents(struct student *start) {
         ptr = temp;
     }
 }
+
