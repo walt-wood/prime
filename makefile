@@ -9,10 +9,10 @@ launch: prime
 	./prime
 
 debug: PassMan	
-	gdb -q PassMan
+	gdb -q prime
 
 clean:
-	rm *.o PassMan
+	rm prime*
 
 git:
 	git add .
