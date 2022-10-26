@@ -2,50 +2,45 @@
 #include <stdlib.h>
 
 struct node
-{
-    int num;
+{    
+    unsigned int num;
     struct node *next;
 };
 
-void print(struct node *);
-struct node *createNode(int );
-struct node *append(struct node *, struct node *);
+void printList(struct node *);
+struct node *createNode(int);
 void freeList(struct node *);
-void add(struct node *, struct node *);
+void add(struct node **, int);
+short checkPrime(int, int *);
 
-int main(int argc, char *argv[]) {
-
-    // int ceil = (argc > 0) ? (int) argv[0] : 5000;
-    struct node *start, *end, *newNode;
-    start = createNode(1);
-    end = start;
-    newNode = createNode(2);
-    end = append(end, newNode);
-    newNode = createNode(3);
-    end = append(end, newNode);
-
-    struct node *s2, *newN2;
-
-    s2 = createNode(4);
-    newN2 = createNode(5);
-    add(s2, newN2);
+int main(int argc, char *argv[]) {    // 
     
-    add(s2, createNode(6));
-    
-    print(start);
-    printf("\n");
-    print(s2);
+    int ceil = (argc >= 2) ? atoi(argv[1]) : 5000;
+    int i = 0;
+    int isPrime = 0;
 
-    freeList(start);
-    freeList(s2);
+    struct node *head = NULL;
+
+    for(int k = 2; k <= ceil; k++) {        
+        i = k / 2;
+
+        isPrime = checkPrime(k, &i);
+
+        if(isPrime == 1) {
+            add(&head, k);
+        }        
+    }
+
+    printList(head);
+    freeList(head);
 
     return 0;
 }
 
-void print(struct node *start) {
-    struct node *ptr = start;
-    while (ptr) {
-        printf("%d ", ptr->num);
+void printList(struct node *head) {
+    struct node *ptr = head;
+    while (ptr != NULL) {
+        printf("%4d ", ptr->num);
         ptr = ptr->next;
     }
 }
@@ -61,34 +56,45 @@ struct node *createNode(int num) {
     return ptr;
 }
 
-void add(struct node *start, struct node *newNode) {
+void add(struct node **head, int num) {
 
-    struct node *ptr = start;
+    struct node *newNode = createNode(num);
 
-    while (ptr->next)
-    {
-        ptr = ptr->next;
+    if(*head == NULL) {
+        *head = newNode;
+    } else {
+
+        struct node *ptr = *head;
+
+        while (ptr->next)
+        {
+            ptr = ptr->next;
+        } 
+
+        ptr->next = newNode;
     }
-    
-    ptr->next = newNode;
 
 }
 
-struct node *append(struct node *currentEnd, struct node *newNode) {
+void freeList(struct node *head) {
 
-    currentEnd->next = newNode;
-    return currentEnd->next;
-}
-
-void freeList(struct node *start) {
-
-    struct node *ptr = start;
+    struct node *ptr = head;
     struct node *temp;
 
     while(ptr) {
         temp = ptr->next;
         free(ptr);
         ptr = temp;
+    }
+}
+
+short checkPrime(int ceil, int *i) {
+
+    if(*i == 1) return 1;
+    else if(ceil % *i == 0) return 0;
+    else {        
+        (*i)--;
+        checkPrime(ceil, i);
     }
 }
 
