@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-struct node
+typedef struct node
 {    
     unsigned int num;
     struct node *next;
@@ -17,8 +17,8 @@ int main(int argc, char *argv[]) {    //
     
     int ceil = (argc >= 2) ? atoi(argv[1]) : 5000;
     int i = 0;
-    int isPrime = 0;
-
+    short isPrime = 0;
+    
     struct node *head = NULL;
 
     for(int k = 2; k <= ceil; k++) {        
